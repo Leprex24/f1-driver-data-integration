@@ -1,0 +1,20 @@
+# środowisko wirtualne
+.venv/
+
+# zmienne środowiskowe
+.env
+
+# baza danych SQLite
+*.db
+
+# cache fastf1 (będzie duży)
+cache/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.idea/
+.vscode/
