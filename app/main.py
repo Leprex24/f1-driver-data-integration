@@ -1,13 +1,14 @@
 import fastapi
 
 from app.database import engine, Base
+from app.routers import drivers, sessions
 
 from app.models import (
-    drivers,
+    drivers as drivers_model,
     teams,
     circuits,
     events,
-    sessions,
+    sessions as sessions_model,
     laps,
     weather_snapshots,
     driver_session_results,
@@ -16,3 +17,5 @@ from app.models import (
 )
 app = fastapi.FastAPI()
 Base.metadata.create_all(engine)
+app.include_router(drivers.router, prefix="/drivers", tags=["drivers"])
+app.include_router(sessions.router, prefix="/sessions", tags=["sessions"])
