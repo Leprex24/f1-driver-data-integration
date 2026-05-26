@@ -1,7 +1,10 @@
+from fastf1.mvapi.api import get_circuit
+
 from app.database import SessionLocal, engine, Base
 from app.models import drivers, teams, circuits, events, sessions
 from app.models import laps, weather_snapshots, driver_session_results
 from app.models import engine_suppliers, team_season_engines
+from app.models.circuits import Circuit
 from app.models.engine_suppliers import EngineSupplier
 from app.models.team_season_engines import TeamSeasonEngine
 from app.models.teams import Team
@@ -19,6 +22,31 @@ def seed_engine_suppliers(db):
     ]
     try:
         db.add_all(suppliers)
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+
+def seed_circuit_types(db):
+    data = [
+        ("Sakhir", "permanent", "balanced"),
+        ("Yas Marina Circuit", "permanent", "balanced"),
+        ("Monte Carlo", "street", "high_downforce"),
+        ("Baku", "street", "low_downforce"),
+        ("Suzuka", "permanent", "high_downforce"),
+        ("Monza", "permanent", "low_downforce"),
+        ("Silverstone", "permanent", "high_downforce"),
+    ]
+
+    for circuit_id, surface_type, circuit_type in data:
+        circuit = db.query(Circuit).filter_by(circuit_id=circuit_id).first()
+        if circuit:
+            circuit.surface_type = surface_type
+            circuit.circuit_type = circuit_type
+        else:
+            print(f"Circuit not found: {circuit_id}")
+
+    try:
         db.commit()
     except Exception:
         db.rollback()
@@ -94,6 +122,8 @@ if __name__ == "__main__":
     try:
         seed_engine_suppliers(db)
         print("Engine suppliers seeded successfully.")
+        seed_circuit_types(db)
+        print("Circuit types seeded successfully.")
         seed_team_season_engine(db)
         print("Team season engines seeded successfully.")
     finally:

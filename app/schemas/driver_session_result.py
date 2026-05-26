@@ -7,7 +7,7 @@ from app.schemas.team import TeamShortSchema
 class DriverSessionResultSchema(BaseModel):
     id: int
     position: int | None
-    points: float
+    points: float | None
     driver: DriverShortSchema
     team: TeamShortSchema
 

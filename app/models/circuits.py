@@ -11,4 +11,6 @@ class Circuit(Base):
     country = Column(String, nullable=False)
     city = Column(String, nullable=False)
     circuit_id = Column(String, nullable=False, unique=True)
+    circuit_type = Column(String, nullable=True)
+    surface_type = Column(String, nullable=True)
     events = relationship("Event", back_populates="circuit")

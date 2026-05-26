@@ -11,7 +11,7 @@ class DriverSessionResult(Base):
     driver_id = Column(Integer, ForeignKey('drivers.id'), nullable=False)
     team_id = Column(Integer, ForeignKey('teams.id'), nullable=False)
     position = Column(Integer, nullable=True)
-    points = Column(Float, nullable=False)
+    points = Column(Float, nullable=True)
     session = relationship("Session", back_populates="driver_session_results")
     driver = relationship("Driver", back_populates="driver_session_results")
     team = relationship("Team", back_populates="driver_session_results")
