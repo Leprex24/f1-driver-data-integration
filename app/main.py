@@ -1,7 +1,7 @@
 import fastapi
 
 from app.database import engine, Base
-from app.routers import drivers, sessions, export, auth
+from app.routers import drivers, sessions, export, auth, comparisons
 
 from app.models import (
     drivers as drivers_model,
@@ -21,3 +21,4 @@ app.include_router(drivers.router, prefix="/drivers", tags=["drivers"])
 app.include_router(sessions.router, prefix="/sessions", tags=["sessions"])
 app.include_router(export.router, prefix="/export", tags=["export"])
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
+app.include_router(comparisons.router, prefix="/comparisons", tags=["comparisons"])
