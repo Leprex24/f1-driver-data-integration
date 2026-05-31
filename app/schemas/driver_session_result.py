@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.schemas.driver import DriverShortSchema
 from app.schemas.team import TeamShortSchema
@@ -11,5 +11,4 @@ class DriverSessionResultSchema(BaseModel):
     driver: DriverShortSchema
     team: TeamShortSchema
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

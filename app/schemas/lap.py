@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.schemas.driver import DriverShortSchema
 from app.schemas.session import SessionSchema
@@ -17,8 +17,7 @@ class LapSchema(BaseModel):
     tyre_life: float | None
     is_valid: bool
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class LapShortSchema(BaseModel):
     id: int
@@ -30,5 +29,4 @@ class LapShortSchema(BaseModel):
     tyre_life: float | None
     is_valid: bool
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

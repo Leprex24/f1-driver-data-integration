@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
+from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -29,9 +30,9 @@ def register(request: RegisterRequest, db: Session = Depends(get_db)):
     return {"message": "User created successfully"}
 
 @router.post("/login")
-def login(request: LoginRequest, db: Session = Depends(get_db)):
-    user = db.query(User).filter_by(username=request.username).first()
-    if not user or not verify_password(request.password, user.hashed_password):
+def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user = db.query(User).filter_by(username=form_data.username).first()
+    if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid username or password")
     token = create_token({"sub": user.username, "role": user.role})
     return {"access_token": token, "token_type": "bearer"}

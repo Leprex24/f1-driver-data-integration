@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class DriverSchema(BaseModel):
     id: int
@@ -8,8 +8,7 @@ class DriverSchema(BaseModel):
     nationality: str | None
     number: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class DriverShortSchema(BaseModel):
     id: int
@@ -17,5 +16,4 @@ class DriverShortSchema(BaseModel):
     first_name: str
     last_name: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

@@ -11,6 +11,7 @@ from app.schemas.lap import LapShortSchema
 from app.schemas.session import SessionSchema
 from app.schemas.weather_snapshot import WeatherSnapshotSchema
 from app.models.sessions import Session as SessionModel
+from app.services.auth_service import get_current_user
 
 
 class SessionExportSchema(BaseModel):
@@ -25,7 +26,7 @@ class SessionExportSchema(BaseModel):
 router = APIRouter()
 
 @router.get("/session/{session_id}/json")
-def export_session_json(session_id: int, db: Session = Depends(get_db)):
+def export_session_json(session_id: int, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     session = db.query(SessionModel).filter(SessionModel.id == session_id).first()
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
@@ -37,7 +38,7 @@ def export_session_json(session_id: int, db: Session = Depends(get_db)):
     }
 
 @router.get("/session/{session_id}/xml")
-def export_session_xml(session_id: int, db: Session = Depends(get_db)):
+def export_session_xml(session_id: int, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     session = db.query(SessionModel).filter(SessionModel.id == session_id).first()
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")

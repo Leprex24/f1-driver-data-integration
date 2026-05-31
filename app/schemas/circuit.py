@@ -1,4 +1,4 @@
-from pydantic.v1 import BaseModel
+from pydantic.v1 import BaseModel, ConfigDict
 
 
 class CircuitSchema(BaseModel):
@@ -9,5 +9,4 @@ class CircuitSchema(BaseModel):
     surface_type: str | None
     circuit: str | None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class TeamSchema(BaseModel):
@@ -7,8 +7,7 @@ class TeamSchema(BaseModel):
     team_color: str
     team_id: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class TeamShortSchema(BaseModel):
@@ -16,5 +15,4 @@ class TeamShortSchema(BaseModel):
     name: str
     team_color: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
