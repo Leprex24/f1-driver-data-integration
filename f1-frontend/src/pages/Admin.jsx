@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import Navbar from '../components/Navbar'
-import {loadSession, loadDefaultSessions} from '../services/api'
+import {loadSession, loadDefaultSessions, seedStaticData} from '../services/api'
 
 export default function Admin({token, onNavigate, onLogout, userRole}) {
     const [year, setYear] = useState('2024')
@@ -10,6 +10,21 @@ export default function Admin({token, onNavigate, onLogout, userRole}) {
     const [loading, setLoading] = useState(false)
     const [defaultsLoading, setDefaultsLoading] = useState(false)
     const [defaultsStatus, setDefaultsStatus] = useState(null)
+    const [seedLoading, setSeedLoading] = useState(false)
+    const [seedStatus, setSeedStatus] = useState(null)
+
+    const handleSeed = async () => {
+        setSeedLoading(true)
+        setSeedStatus(null)
+        try {
+            const result = await seedStaticData(token)
+            setSeedStatus({message: result.message})
+        } catch (e) {
+            setSeedStatus({error: e.message})
+        } finally {
+            setSeedLoading(false)
+        }
+    }
 
     const handleLoad = async () => {
         setLoading(true)
@@ -180,6 +195,48 @@ export default function Admin({token, onNavigate, onLogout, userRole}) {
                             fontSize: '13px',
                             marginTop: '16px'
                         }}>✗ {defaultsStatus.error}</div>
+                    )}
+                </div>
+                <div style={{
+                    backgroundColor: '#1a1a1a',
+                    border: '1px solid #222',
+                    borderTop: '3px solid #FFD700',
+                    padding: '32px',
+                    marginTop: '16px'
+                }}>
+                    <div style={{
+                        color: '#FFD700',
+                        fontSize: '11px',
+                        fontWeight: '700',
+                        letterSpacing: '3px',
+                        marginBottom: '8px'
+                    }}>
+                        STATIC DATA
+                    </div>
+                    <div style={{color: '#888', fontSize: '14px', marginBottom: '20px'}}>
+                        Seed engine suppliers, circuit types and team season engines. Run once after first setup.
+                    </div>
+                    <button onClick={handleSeed} disabled={seedLoading} style={{
+                        backgroundColor: '#1a1a1a',
+                        color: '#FFD700',
+                        border: '1px solid #FFD70044',
+                        padding: '14px',
+                        fontSize: '14px',
+                        fontWeight: '800',
+                        letterSpacing: '3px',
+                        cursor: 'pointer',
+                        fontFamily: 'inherit',
+                        width: '100%',
+                        opacity: seedLoading ? 0.7 : 1
+                    }}>
+                        {seedLoading ? 'SEEDING...' : 'SEED STATIC DATA →'}
+                    </button>
+                    {seedStatus?.message && (
+                        <div
+                            style={{color: '#00c853', fontSize: '13px', marginTop: '16px'}}>✓ {seedStatus.message}</div>
+                    )}
+                    {seedStatus?.error && (
+                        <div style={{color: '#ff4466', fontSize: '13px', marginTop: '16px'}}>✗ {seedStatus.error}</div>
                     )}
                 </div>
             </div>

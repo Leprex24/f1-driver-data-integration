@@ -106,3 +106,11 @@ export const getTeammates = async (token, season, circuitId = null) => {
     })
     return response.json()
 }
+
+export const seedStaticData = async (token) => {
+    const response = await fetch(`${BASE_URL}/sessions/seed-static-data`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`}
+    })
+    return response.json()
+}

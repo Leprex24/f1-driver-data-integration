@@ -129,3 +129,14 @@ def get_teammates(
                 "drivers": [{"abbreviation": d.abbreviation, "last_name": d.last_name} for d in drivers_in_team]
             })
     return result
+
+@router.post("/seed-static-data")
+def seed_static_data(db: Session = Depends(get_db), current_user = Depends(require_admin)):
+    try:
+        from app.scripts.seed_static_data import seed_engine_suppliers, seed_team_season_engine, seed_circuit_types
+        seed_engine_suppliers(db)
+        seed_circuit_types(db)
+        seed_team_season_engine(db)
+        return {"message": "Static data seeded successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
