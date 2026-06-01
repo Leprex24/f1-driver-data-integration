@@ -54,6 +54,10 @@ export default function Admin({token, onNavigate, onLogout, userRole}) {
 
     return (
         <div style={{backgroundColor: '#0a0a0a', minHeight: '100vh', color: '#f5f5f5'}}>
+            <style>{`
+            @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700;900&display=swap');
+            * { font-family: 'Rajdhani', sans-serif; }
+        `}</style>
             <Navbar onNavigate={onNavigate} currentPage="admin" onLogout={onLogout} userRole={userRole}/>
             <div style={{maxWidth: '600px', margin: '0 auto', padding: '48px 40px'}}>
                 <div style={{color: '#E8002D', fontSize: '11px', letterSpacing: '4px', marginBottom: '8px'}}>ADMIN</div>
