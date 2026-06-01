@@ -98,9 +98,10 @@ export const getSessionWeather = async (token, sessionId) => {
     return response.json()
 }
 
-export const getTeammates = async (token, season, circuitId = null) => {
+export const getTeammates = async (token, season, circuitId = null, sessionType = null) => {
     const params = new URLSearchParams({ season })
     if (circuitId) params.append('circuit_id', circuitId)
+    if (sessionType) params.append('session_type', sessionType)
     const response = await fetch(`${BASE_URL}/sessions/teammates?${params}`, {
         headers: { 'Authorization': `Bearer ${token}` }
     })

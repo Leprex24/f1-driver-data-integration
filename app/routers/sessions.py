@@ -109,24 +109,41 @@ def get_session_weather(session_id: int, db: Session = Depends(get_read_db), cur
 def get_teammates(
         season: int,
         circuit_id: str = None,
+        session_type: str = None,
         db: Session = Depends(get_db),
         current_user=Depends(get_current_user)
 ):
-    query = db.query(Team).join(DriverSessionResult).join(SessionModel).join(Event)
+    query = db.query(Team).join(DriverSessionResult, DriverSessionResult.team_id == Team.id).join(SessionModel, DriverSessionResult.session_id == SessionModel.id).join(Event, SessionModel.event_id == Event.id).filter(Event.season == season)
     if circuit_id:
         query = query.join(Circuit, Event.circuit_id == Circuit.id).filter(Circuit.city == circuit_id)
-    query = query.filter(Event.season == season)
+    if session_type:
+        query = query.filter(SessionModel.type == session_type)
+
     teams = query.distinct().all()
 
     result = []
     for team in teams:
-        drivers_in_team = db.query(Driver).join(DriverSessionResult).join(SessionModel).join(Event).filter(Event.season == season).filter(DriverSessionResult.team_id == team.id).distinct().all()
-        if len(drivers_in_team) >= 1:
+        drivers_query = db.query(Driver) \
+            .join(DriverSessionResult, DriverSessionResult.driver_id == Driver.id) \
+            .join(SessionModel, DriverSessionResult.session_id == SessionModel.id) \
+            .join(Event, SessionModel.event_id == Event.id) \
+            .filter(Event.season == season) \
+            .filter(DriverSessionResult.team_id == team.id)
+
+        if circuit_id:
+            drivers_query = drivers_query.join(Circuit, Event.circuit_id == Circuit.id) \
+                .filter(Circuit.city == circuit_id)
+
+        if session_type:
+            drivers_query = drivers_query.filter(SessionModel.type == session_type)
+
+        drivers = drivers_query.distinct().all()
+        if len(drivers) >= 1:
             result.append({
                 "team_id": team.team_id,
                 "team_name": team.name,
                 "team_color": team.team_color,
-                "drivers": [{"abbreviation": d.abbreviation, "last_name": d.last_name} for d in drivers_in_team]
+                "drivers": [{"abbreviation": d.abbreviation, "last_name": d.last_name} for d in drivers]
             })
     return result
 

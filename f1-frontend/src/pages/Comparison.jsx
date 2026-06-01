@@ -557,8 +557,8 @@ export default function Comparison({token, onNavigate, onLogout, userRole, defau
 
     useEffect(() => {
         if (!form.season) return
-        getTeammates(token, form.season, form.circuit_id || null).then(setTeams)
-    }, [form.season, form.circuit_id])
+        getTeammates(token, form.season, form.circuit_id || null, form.session_type || null).then(setTeams)
+    }, [form.season, form.circuit_id, form.session_type])
 
     useEffect(() => {
         if (!form.circuit_id) return
@@ -692,6 +692,39 @@ export default function Comparison({token, onNavigate, onLogout, userRole, defau
                                 ))}
                             </select>
                         )}
+
+                        {teamMode && selectedTeam && (() => {
+                            const team = teams.find(t => t.team_id === selectedTeam)
+                            if (team?.drivers?.length > 2) {
+                                return (
+                                    <div style={{display: "flex", gap: "8px"}}>
+                                        <select
+                                            value={form.driver1}
+                                            onChange={e => setForm(f => ({...f, driver1: e.target.value}))}
+                                            style={formStyles.select}
+                                        >
+                                            {team.drivers.map(d => (
+                                                <option key={d.abbreviation} value={d.abbreviation}>
+                                                    {d.abbreviation} – {d.last_name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <select
+                                            value={form.driver2}
+                                            onChange={e => setForm(f => ({...f, driver2: e.target.value}))}
+                                            style={formStyles.select}
+                                        >
+                                            {team.drivers.map(d => (
+                                                <option key={d.abbreviation} value={d.abbreviation}>
+                                                    {d.abbreviation} – {d.last_name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )
+                            }
+                            return null
+                        })()}
                     </div>
 
                     <form onSubmit={handleSubmit} style={formStyles.grid}>
