@@ -131,6 +131,10 @@ export default function Dashboard({token, onNavigate, onLogout, userRole}) {
     const [filter, setFilter] = useState("ALL");
     const [currentPage, setCurrentPage] = useState("dashboard");
 
+    useEffect(() => {
+        fetchSessions();
+    }, []);
+
     const fetchSessions = async () => {
         try {
             const response = await fetch("http://localhost:8000/sessions/", {
