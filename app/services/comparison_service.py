@@ -1,5 +1,3 @@
-from idlelib import query
-
 from app.models.circuits import Circuit
 from app.models.driver_session_results import DriverSessionResult
 from app.models.drivers import Driver

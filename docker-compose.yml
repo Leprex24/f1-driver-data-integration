@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./f1.db:/app/f1.db
+      - ./cache:/app/cache
+    env_file:
+      - .env
+
+  frontend:
+    build: ./f1-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
