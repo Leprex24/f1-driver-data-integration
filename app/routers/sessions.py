@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.database import get_db
+from app.database import get_db, get_read_db
 from app.models.driver_session_results import DriverSessionResult
 from app.models.drivers import Driver
 from app.models.teams import Team
@@ -16,7 +16,7 @@ router = APIRouter()
 
 
 @router.get("/")
-def get_sessions(db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+def get_sessions(db: Session = Depends(get_read_db), current_user=Depends(get_current_user)):
     sessions = db.query(SessionModel).join(Event).join(Circuit).all()
     return [
         {
@@ -43,7 +43,7 @@ def load_session_endpoint(request: LoadSessionRequest, db: Session = Depends(get
 
 
 @router.get("/available")
-def get_available_sessions(season: int = None, circuit_id: str = None, db: Session = Depends(get_db),
+def get_available_sessions(season: int = None, circuit_id: str = None, db: Session = Depends(get_read_db),
                            current_user=Depends(get_current_user)):
     query = db.query(SessionModel).join(Event).join(Circuit)
     if season:
@@ -89,7 +89,7 @@ def load_default_session(db: Session = Depends(get_db), current_user=Depends(get
 
 
 @router.get("/{session_id}/weather")
-def get_session_weather(session_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+def get_session_weather(session_id: int, db: Session = Depends(get_read_db), current_user=Depends(get_current_user)):
     from app.models.weather_snapshots import WeatherSnapshot
     snapshots = db.query(WeatherSnapshot).filter_by(session_id=session_id).all()
     return [

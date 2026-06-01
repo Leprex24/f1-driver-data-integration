@@ -3,7 +3,7 @@ from lxml import etree
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from app.database import get_db
+from app.database import get_db, get_read_db
 from app.models.drivers import Driver
 from app.models.teams import Team
 from app.schemas.driver_session_result import DriverSessionResultSchema
@@ -26,7 +26,7 @@ class SessionExportSchema(BaseModel):
 router = APIRouter()
 
 @router.get("/session/{session_id}/json")
-def export_session_json(session_id: int, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
+def export_session_json(session_id: int, db: Session = Depends(get_read_db), current_user = Depends(get_current_user)):
     session = db.query(SessionModel).filter(SessionModel.id == session_id).first()
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
@@ -38,7 +38,7 @@ def export_session_json(session_id: int, db: Session = Depends(get_db), current_
     }
 
 @router.get("/session/{session_id}/xml")
-def export_session_xml(session_id: int, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
+def export_session_xml(session_id: int, db: Session = Depends(get_read_db), current_user = Depends(get_current_user)):
     session = db.query(SessionModel).filter(SessionModel.id == session_id).first()
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
