@@ -8,7 +8,7 @@ from app.services.auth_service import get_current_user
 
 router = APIRouter()
 
-@router.get("/", response_model=list[DriverShortSchema])
+@router.get("/", response_model=list[DriverSchema])
 def get_drivers(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     return db.query(Driver).all()
 

@@ -17,8 +17,8 @@ def summary(driver1, driver2, circuit_id, season, session_type, db: Session = De
     return result
 
 @router.get("/detailed")
-def detailed(driver1, driver2, circuit_id, season, session_type, lap_from: int = None, laps_to: int = None, compound: str = None, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
-    result = compare_drivers_detailed(db, driver1, driver2, circuit_id, season, session_type, lap_from, laps_to, compound)
+def detailed(driver1, driver2, circuit_id, season, session_type, lap_from: int = None, lap_to: int = None, compound: str = None, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
+    result = compare_drivers_detailed(db, driver1, driver2, circuit_id, season, session_type, lap_from, lap_to, compound)
     if not result:
         raise HTTPException(status_code=404, detail="Session not found")
     return result
