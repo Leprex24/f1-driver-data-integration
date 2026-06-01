@@ -33,7 +33,7 @@ const CIRCUIT_FLAGS = {
     Brazil: "br",
     "Saudi Arabia": "sa", Jeddah: "sa",
     Australia: "au", Melbourne: "au",
-    Canada: "ca", Montreal: "ca",
+    Canada: "ca", Montréal: "ca",
     France: "fr", "Le Castellet": "fr",
     Austria: "at", Spielberg: "at",
     Qatar: "qa", Lusail: "qa",
@@ -130,16 +130,6 @@ export default function Dashboard({token, onNavigate, onLogout, userRole}) {
     const [error, setError] = useState("");
     const [filter, setFilter] = useState("ALL");
     const [currentPage, setCurrentPage] = useState("dashboard");
-
-    useEffect(() => {
-        fetchSessions();
-    }, []);
-    useEffect(() => {
-        if (sessions.length > 0) {
-            console.log("Session example:", sessions[0]);
-            console.log("All circuits:", [...new Set(sessions.map(s => s.circuit))]);
-        }
-    }, [sessions]);
 
     const fetchSessions = async () => {
         try {

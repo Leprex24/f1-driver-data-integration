@@ -15,22 +15,10 @@ import Navbar from "../components/Navbar";
 
 const F1_RED = "#E8002D";
 const F1_DARK = "#0a0a0a";
-const F1_GRAY = "#141414";
 const F1_GRAY2 = "#1a1a1a";
 const F1_LIGHT = "#f5f5f5";
 const DRIVER1_COLOR = "#4a9eff";
 const DRIVER2_COLOR = "#FFD700";
-
-const CIRCUITS = [
-    {value: "Sakhir", label: "Bahrain – Sakhir"},
-    {value: "Yas Island", label: "Abu Dhabi – Yas Island"},
-    {value: "Monte Carlo", label: "Monaco – Monte Carlo"},
-    {value: "Baku", label: "Azerbaijan – Baku"},
-    {value: "Monza", label: "Italy – Monza"},
-    {value: "Silverstone", label: "Great Britain – Silverstone"},
-    {value: "Suzuka", label: "Japan – Suzuka"},
-    {value: "Miami Gardens", label: "USA – Miami"},
-];
 
 const COMPOUNDS = ["SOFT", "MEDIUM", "HARD", "INTERMEDIATE", "WET"];
 
